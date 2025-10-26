@@ -2,6 +2,8 @@
 
 This is a project that uses RAPTOR and several transport APIs to provide live route generation for public transport to get from A to B. Uses OSRM for walking times and vite/react for the frontend with leaflet for the map.
 
+A detailed writeup of the project is [here](https://asherfalcon.com/blog/posts/5)
+
 I have provided a docker-compose file if you want to run this yourself, however you may need to change the image platforms, and you will definitely need to download the england osm pbf files and initialise them, with the following commands inside the osrm directory
 
 ### Download and process files
@@ -16,7 +18,7 @@ docker run -t -v $(pwd):/data osrm/osrm-backend osrm-customize /data/england.osr
 ```
 
 
-### Start the services
+### Start the system
 
 ```
 docker compose up --build
