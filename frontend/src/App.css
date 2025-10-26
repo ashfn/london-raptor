@@ -1,0 +1,596 @@
+.app-root {
+  width: 100%;
+  height: 100vh;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.route-planner {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.route-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  padding: 8px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+}
+
+.route-form input {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 10px;
+  outline: none;
+  width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-form input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.route-form .arrow {
+  color: #6b7280;
+}
+
+.route-form button {
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.route-form button:hover {
+  background: #0b1220;
+}
+
+.route-info {
+  margin-top: 8px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  color: #111827;
+  max-width: 360px;
+  max-height: 75vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-summary-top {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(4px);
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 8px 8px 0 0;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.summary-refresh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.last-updated {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.refresh-button {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+.refresh-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.route-segments {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  pointer-events: auto;
+}
+
+.route-segment {
+  font-size: 14px;
+}
+
+.segment-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.segment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.segment-bus-header {
+  background: #ef4444;
+  color: white;
+}
+
+.segment-bus-header:hover {
+  background: #dc2626;
+}
+
+.segment-walk-header {
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+.segment-walk-header:hover {
+  background: #e5e7eb;
+}
+
+.segment-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  gap: 16px;
+}
+
+.segment-title {
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.segment-icon {
+  flex-shrink: 0;
+}
+
+.segment-duration {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.duration-unit {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.expand-icon {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-left: 8px;
+}
+
+.segment-details {
+  padding: 12px 16px 8px;
+}
+
+.stop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.stop-item {
+  font-size: 13px;
+  color: #374151;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stop-time {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 600;
+  min-width: 42px;
+  flex-shrink: 0;
+}
+
+.stop-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6b7280;
+}
+
+.stop-item.start::before {
+  background: #3b82f6;
+}
+
+.stop-item.end::before {
+  background: #ef4444;
+}
+
+.stop-item.intermediate::before {
+  width: 6px;
+  height: 6px;
+  background: #9ca3af;
+}
+
+.route-line {
+  position: absolute;
+  left: 3.5px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: #ef4444;
+}
+
+.intermediate-stops-toggle {
+  position: relative;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px 0;
+  padding-left: 29px;
+  text-align: left;
+  width: 100%;
+  color: #6b7280;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.intermediate-stops-toggle:hover {
+  color: #374151;
+}
+
+.intermediate-stops-toggle .stops-count {
+  margin-left: 0;
+}
+
+.intermediate-stops {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Timeline visualization for stops */
+.timeline-stops {
+  position: relative;
+  padding: 8px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 11px;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
+  background: #ef4444;
+  z-index: 0;
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  z-index: 1;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  margin-left: 7px;
+}
+
+.timeline-dot-transfer {
+  width: 14px;
+  height: 14px;
+  border: 3px solid #000 !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+  margin-left: 5px;
+}
+
+.timeline-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.stop-name {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.summary-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.suggestions {
+  margin-top: 6px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  max-height: 260px;
+  overflow: auto;
+  padding: 6px;
+  width: 420px;
+  pointer-events: auto;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.suggestion-item:hover {
+  background: #f3f4f6;
+}
+
+.suggestion-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+.suggestion-modes {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.suggestion-lines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.line-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: white;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.roundel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(0,0,0,0.15);
+}
+
+.roundel-text {
+  transform: translateY(0.5px);
+}
+
+/* Transfer point labels - black for start/end */
+.leaflet-tooltip.transfer-label-black {
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-tooltip.transfer-label-black::before {
+  border-top-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Walking labels - blue, centered */
+.leaflet-tooltip.walk-label {
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.leaflet-tooltip.walk-label::before {
+  display: none;
+}
+
+.leaflet-tooltip.walk-label svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* Transfer point labels - white for boarding instructions */
+.leaflet-tooltip.transfer-label-white {
+  background: white;
+  color: black;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.leaflet-tooltip.transfer-label-white::before {
+  border-top-color: white;
+}
+
+/* Transport badge inside labels (bus/tube) */
+.transport-badge {
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 11px;
+  display: inline-block;
+  margin: 0 2px;
+}
+
+/* Close transfer label styling */
+.transfer-close {
+  text-align: center;
+}
+
+.transfer-station {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: #000;
+}
+
+.transfer-line {
+  font-size: 11px;
+  color: #000;
+}
+
+/* Legacy support */
+.bus-badge {
+  background: #ef4444;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 11px;
+  display: inline-block;
+  margin: 0 2px;
+}
+
+.segment-platform {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 4px;
+}

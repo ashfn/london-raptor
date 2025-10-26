@@ -1,0 +1,50 @@
+name: london-router
+services:
+  influxdb:
+    image: influxdb:2.7-alpine
+    platform: linux/arm64
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=local-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=metrics
+      - DOCKER_INFLUXDB_INIT_RETENTION=0
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+  osrm:
+    platform: linux/amd64
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./osrm:/data
+    image: osrm/osrm-backend
+    command: osrm-routed --algorithm mld /data/england.osm.pbf
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    restart: always
+    ports:
+      - "4225:4225"
+    environment:
+      - FLASK_ENV=production
+      - TFL_API_KEY=${TFL_API_KEY}
+      - RAIL_MARKETPLACE_API_KEY=${RAIL_MARKETPLACE_API_KEY}
+      - RAIL_MARKETPLACE_API_KEY_2=${RAIL_MARKETPLACE_API_KEY_2}
+      - RAIL_MARKETPLACE_API_KEY_3=${RAIL_MARKETPLACE_API_KEY_3}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    ports:
+      - "80:80"
+    restart: always
+
+volumes:
+  influxdb-data:
